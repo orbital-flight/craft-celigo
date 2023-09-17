@@ -1,0 +1,59 @@
+{# @var plugin \orbitalflight\celigo\Celigo #}
+{# @var settings \orbitalflight\celigo\models\Settings #}
+
+{% import '_includes/forms.twig' as forms %}
+
+{% set cols = [
+    {
+        type: 'singleline',
+        heading: 'handle',
+        code: true,
+    },
+    {
+        type: 'autosuggest',
+        name: 'apiId',
+        suggestEnvVars: true,
+        heading: 'API ID',
+    },
+    {
+        type: 'autosuggest',
+        name: 'apiToken',
+        suggestEnvVars: true,
+        heading: 'API Token',
+    },
+] %}
+
+{{ forms.editableTableField({
+    label: "Available My API Endpoints:",
+    instructions: "Please provide your endpoints' informations below. The handle refers to the way you can call an endpoint in your forms and templates.",
+    name: 'apis',
+    cols: cols,
+    rows: settings.apis,
+    allowAdd: true,
+    allowDelete: true,
+    required: true,
+    first: true,
+    errors: settings.getErrors('apis'),
+    tip: "Please save your changes after adding a new row to display environment variables options."
+}) }}
+
+{# Example usage: `craft.celigo.get('handle')` #}
+
+{{ forms.textField({
+    label: "Request timeout:",
+    type: "number",
+    instructions: "Time in seconds after which the request will be canceled by the plugin.",
+    tip: "This is limited by the current PHP max_execution_time (currently " ~ settings.getMaxExecutionTime ~ "s).",
+    name: "timeout",
+    value: settings.timeout,
+    errors: settings.getErrors('timeout'),
+    required: true,        
+    suggestEnvVars: true,
+    suggestAliases: true,
+}) }}
+
+<a href="http://github.com/orbital-flight/craft-celigo" target="_blank" style="color:inherit;">
+    {{ forms.button({
+        label: "Documentation",
+    }) }}
+</a>
