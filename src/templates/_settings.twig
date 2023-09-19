@@ -25,12 +25,13 @@
 
 {{ forms.editableTableField({
     label: "Available My API Endpoints:",
-    instructions: "Please provide your endpoints' informations below. The handle refers to the way you can call an endpoint in your forms and templates.",
+    instructions: "Please provide your endpoints' informations below. The handle refers to the way you can call an endpoint in your forms and templates. (Case sensitive):",
     name: 'apis',
     cols: cols,
     rows: settings.apis,
     allowAdd: true,
     allowDelete: true,
+    allowReorder: true,
     required: true,
     first: true,
     errors: settings.getErrors('apis'),
@@ -42,6 +43,8 @@
 {{ forms.textField({
     label: "Request timeout:",
     type: "number",
+    min: 5,
+    max: settings.getMaxExecutionTime,
     instructions: "Time in seconds after which the request will be canceled by the plugin.",
     tip: "This is limited by the current PHP max_execution_time (currently " ~ settings.getMaxExecutionTime ~ "s).",
     name: "timeout",

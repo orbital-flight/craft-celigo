@@ -59,13 +59,13 @@ For error 4XX and 5XX, the `debugError` property will contain the full API’s r
 {% endif %}
 ```
 
-For early development, you can just dump any of your responses with:
+For early development, you can just dump any of your response with:
 ```twig
 {{ dump(response) ?? "" }}
 ```
 
 ## Disclaimer
-This plugin mostly acts like an API bridge between your Craft project and any existing Celigo MyAPI endpoints. However, and because Celigo’s solution is very complete, sensible data can easily be obtained and dealed with. Keep in mind that you are responsible for your scripts behaviours and for the usage or display of the data you can manipulate with this plugin. 
+This plugin mostly acts like an API bridge between your Craft project and any existing Celigo MyAPI endpoints. However, and because Celigo’s solution is very complete, sensible data can easily be obtained and dealed with. Keep in mind that you are responsible for your script's behaviours and for the usage or display of the data you can manipulate with this plugin. 
 
 Orbital-flight is not linked to Celigo ;-) 
 
