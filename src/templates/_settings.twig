@@ -38,7 +38,23 @@
     tip: "Please save your changes after adding a new row to display environment variables options."
 }) }}
 
-{# Example usage: `craft.celigo.get('handle')` #}
+<a href="https://github.com/orbital-flight/craft-celigo#readme" target="_blank" style="color:inherit;">
+    {{ forms.button({
+        label: "Documentation",
+    }) }}
+</a>
+
+<hr>
+
+{{ forms.lightswitchField({
+    label: "Allow anonymous access:",
+    instructions: "Whether the controller should be accessible for anonymous users. Will redirect users to the login page is disabled.",
+    name: "allowAnonymous",
+    on: settings.allowAnonymous,
+    onLabel: "ON",
+    offLabel: "OFF",
+    errors: settings.getErrors('allowAnonymous'),
+}) }}
 
 {{ forms.textField({
     label: "Request timeout:",
@@ -54,9 +70,3 @@
     suggestEnvVars: true,
     suggestAliases: true,
 }) }}
-
-<a href="http://github.com/orbital-flight/craft-celigo" target="_blank" style="color:inherit;">
-    {{ forms.button({
-        label: "Documentation",
-    }) }}
-</a>

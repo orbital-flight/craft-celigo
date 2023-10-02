@@ -16,7 +16,7 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 
 class CeligoService extends Component {
-    
+
     /**
      * call
      * Calls the Celigo My API service
@@ -27,7 +27,7 @@ class CeligoService extends Component {
      * @return array
      */
     public function call(string $handle = null, string $action, array $params = null): array {
-        
+
         $settings = Celigo::getInstance()->getSettings();
 
         // * A) Check handle and credentials
@@ -57,7 +57,7 @@ class CeligoService extends Component {
                 ],
                 'timeout' => $settings->timeout,
             ]);
-            
+
             // Return the response if JSON
             $responseBody = $response->getBody()->getContents();
             $decodedJSON = json_decode($responseBody, true);
@@ -71,28 +71,37 @@ class CeligoService extends Component {
                 ];
             }
 
-        // * Catch potential errors
+            // * Catch potential errors
         } catch (ConnectException $e) {
 
             // Send a timeout error message
             return ['error' => "The request reached the maximum execution time."];
-        } catch (ClientException $e) {
-
-            // 4XX => Send an error message with the reason along with a full debug dump
-            $response = $e->getResponse();
-            return [
-                'error' => "The API server returned the following error: " . $response->getStatusCode() . " – " . $response->getReasonPhrase(),
-                'errorDebug' => $response,
-            ];
-        } catch (ServerException $e) {
-
-            // 5XX => Send an error message with the reason along with a full debug dump
-            $response = $e->getResponse();
-            return [
-                'error' => "The API server returned the following error: " . $response->getStatusCode() . " – " . $response->getReasonPhrase(),
-                'errorDebug' => $response,
-            ];
+            
+        } catch (ClientException $e) { // 4XX
+            return $this->_formatError($e->getResponse());
+        } catch (ServerException $e) { // 5XX
+            return $this->_formatError($e->getResponse());
         }
+    }
+    
+    /**
+     * _formatError
+     * Format the Guzzld error in a comprehensive array
+     *
+     * @param  mixed $response
+     * @return array
+     */
+    protected function _formatError($response): array {
+        $debugError['status'] = $response->getStatusCode();
+        $debugError['reasonPhrase'] = $response->getReasonPhrase();
+        $debugError['body'] = $response->getBody()->getContents();
+        $debugError['headers'] = $response->getHeaders();
+        $debugError['metadata'] = $response->getBody()->getMetadata();
+        return [
+            'error' => "The API server returned the following error: " . $response->getStatusCode() . " – " . $response->getReasonPhrase(),
+            'errorBody' => json_decode($debugError['body'], true)['errors'][0],
+            'errorDebug' => $debugError,
+        ];
     }
 
     /**

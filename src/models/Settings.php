@@ -17,6 +17,7 @@ class Settings extends Model {
     // === Properties ===
     public array $apis = [];
     public int $timeout = 30;
+    public bool $allowAnonymous = false;
 
     // === Methods ===
     public function getMaxExecutionTime(): int {

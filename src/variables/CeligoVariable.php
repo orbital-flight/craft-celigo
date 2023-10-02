@@ -6,11 +6,19 @@
 
 namespace orbitalflight\celigo\variables;
 
-use Craft;
 use orbitalflight\celigo\Celigo;
 
 class CeligoVariable {
-
+    
+    /**
+     * _call
+     * Gathers the informations and send them to the service
+     *
+     * @param  mixed $handle
+     * @param  mixed $action
+     * @param  mixed $params
+     * @return array
+     */
     private function _call(string $handle = null, string $action, array $params = null): array {
         return Celigo::getInstance()->service->call($handle, $action, $params);
     }
