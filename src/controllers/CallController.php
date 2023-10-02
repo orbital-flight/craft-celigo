@@ -7,6 +7,7 @@
 namespace orbitalflight\celigo\controllers;
 
 use Craft;
+use craft\elements\Entry;
 use craft\web\Controller;
 use craft\web\View;
 use orbitalflight\celigo\Celigo;
@@ -30,7 +31,10 @@ class CallController extends Controller {
             $this->requireAcceptsJson();
             return $this->asJson($response);
         } else {
+            // Redirect to section or template
             $redirect = $this->request->getValidatedBodyParam('redirect') ?? $this->request->getFullPath();
+            $section = Entry::find()->section($redirect)->one();
+            $redirect = $section ? $section->getRoute()[1]['template'] : $redirect;
             return $this->renderTemplate($redirect, ['response' => $response], View::TEMPLATE_MODE_SITE);
         }
     }
