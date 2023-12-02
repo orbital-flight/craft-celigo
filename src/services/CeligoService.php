@@ -97,9 +97,16 @@ class CeligoService extends Component {
         $debugError['body'] = $response->getBody()->getContents();
         $debugError['headers'] = $response->getHeaders();
         $debugError['metadata'] = $response->getBody()->getMetadata();
+
+        $errorBody = "No other error details were provided.";
+        $errorBodyRaw = json_decode($debugError['body'], true);
+        if (is_array($errorBodyRaw) && array_key_exists('errors', $errorBodyRaw)) {
+            $errorBody = $errorBodyRaw['errors'][0];
+        }
+
         return [
             'error' => "The API server returned the following error: " . $response->getStatusCode() . " – " . $response->getReasonPhrase(),
-            'errorBody' => json_decode($debugError['body'], true)['errors'][0],
+            'errorBody' => $errorBody,
             'errorDebug' => $debugError,
         ];
     }

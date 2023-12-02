@@ -1,5 +1,9 @@
 # Release Notes for Celigo
 
+## 1.1.2 - 2023.12.02
+### Fixed
+* Fixed an error which occured when getting an `error` response from the API without its usual `error` body.
+
 ## 1.1.1 - 2023.10.02
 ### Fixed 
 * Fixed a bug where the controller could not recognize a section handle
